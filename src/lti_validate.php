@@ -12,12 +12,13 @@ $lti_db_open = function ($request, $response, $next) {
 		return $response->withStatus(500);
 	}
 
-	$ok = init_db($db['db']);
-	if(!$ok) {
-		$response->getBody()->write('Error while initializing DB!');
+	$result = init_db($db['db']);
+	if(!$result['ok']) {
+		$response->getBody()->write('Error while initializing DB: '.$result['error']);
 		return $response->withStatus(500);
 	}
-	$request['data_connector'] = DataConnector\DataConnector::getDataConnector(DB_TABLENAME_PREFIX, $db['db']);
+	// TODO: attach to request, session or something
+	$data_connector = DataConnector\DataConnector::getDataConnector(DB_TABLENAME_PREFIX, $db['db']);
 
 	$response = $next($request, $response);
 
