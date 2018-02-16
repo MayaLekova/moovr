@@ -116,7 +116,7 @@ function init_db($db) {
 		$ok = $db->exec($sql) !== FALSE;
 		if ($ok) {
 			$tb_name = $prefix . DataConnector\DataConnector::CONTEXT_TABLE_NAME;
-			$sql = "CREATE INDEX {$tb_name}_consumer_id_IDX ON {$tb_name} (consumer_pk ASC);";
+			$sql = "CREATE INDEX IF NOT EXISTS {$tb_name}_consumer_id_IDX ON {$tb_name} (consumer_pk ASC);";
 			$ok = $db->exec($sql) !== FALSE;
 		}
 	}
@@ -135,12 +135,12 @@ function init_db($db) {
 		$ok = $db->exec($sql) !== FALSE;
 		if ($ok) {
 			$tb_name = $prefix . DataConnector\DataConnector::RESOURCE_LINK_TABLE_NAME;
-			$sql = "CREATE INDEX {$tb_name}_consumer_pk_IDX ON {$tb_name} (consumer_pk ASC);";
+			$sql = "CREATE INDEX IF NOT EXISTS {$tb_name}_consumer_pk_IDX ON {$tb_name} (consumer_pk ASC);";
 			$ok = $db->exec($sql) !== FALSE;
 		}
 		if ($ok) {
 			$tb_name = $prefix . DataConnector\DataConnector::RESOURCE_LINK_TABLE_NAME;
-			$sql = "CREATE INDEX {$tb_name}_context_pk_IDX ON {$tb_name} (context_pk ASC);";
+			$sql = "CREATE INDEX IF NOT EXISTS {$tb_name}_context_pk_IDX ON {$tb_name} (context_pk ASC);";
 			$ok = $db->exec($sql) !== FALSE;
 		}
 	}
@@ -156,7 +156,7 @@ function init_db($db) {
 		$ok = $db->exec($sql) !== FALSE;
 		if ($ok) {
 			$tb_name = $prefix . DataConnector\DataConnector::USER_RESULT_TABLE_NAME;
-			$sql = "CREATE INDEX {$tb_name}_resource_link_pk_IDX ON {$tb_name} (resource_link_pk ASC);";
+			$sql = "CREATE INDEX IF NOT EXISTS {$tb_name}_resource_link_pk_IDX ON {$tb_name} (resource_link_pk ASC);";
 			$ok = $db->exec($sql) !== FALSE;
 		}
 	}
@@ -171,7 +171,7 @@ function init_db($db) {
 		$ok = $db->exec($sql) !== FALSE;
 		if ($ok) {
 			$tb_name = $prefix . DataConnector\DataConnector::RESOURCE_LINK_SHARE_KEY_TABLE_NAME;
-			$sql = "CREATE INDEX {$tb_name}_resource_link_pk_IDX ON {$tb_name} (resource_link_pk ASC);";
+			$sql = "CREATE INDEX IF NOT EXISTS {$tb_name}_resource_link_pk_IDX ON {$tb_name} (resource_link_pk ASC);";
 			$ok = $db->exec($sql) !== FALSE;
 		}
 	}
