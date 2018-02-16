@@ -1,9 +1,353 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+
+<!--
+	MEIRO
+	Main entry page
+-->
+
 <html>
-<head>
-	<title>Meiro</title>
-</head>
-<body>
-	Here be Meiro!
-</body>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/meiro.css">
+		
+		<script src="libx/three.min.js"></script>
+		<script src="libx/Tween.js"></script>
+		<script src="libx/threex.rendererstats.js"></script>
+		<script src="lib/main.js"></script>
+
+		<script>
+			options = new MEIRO.Options();
+			function start(url)
+			{
+				if (!url) url = 'play.html';			
+				if (topMenu) topMenu.style.display = 'none';
+				topList.style.display = 'none';
+				topFrame.style = 'width:100%; height:100%; position:fixed; top:0%; left:0%; z-index:1; display: block; border:none;';
+				topFrame.style.backgroundColor = '#'+MEIRO.BACKGROUND_COLOR.toString(16);
+				if (window.location.href.indexOf('file://')!=0)
+				{
+					Element.prototype.requestFullscreen = Element.prototype.requestFullscreen ||
+						Element.prototype.webkitRequestFullscreen ||
+						Element.prototype.msRequestFullscreen ||
+						Element.prototype.mozRequestFullScreen;
+					topFrame.requestFullscreen();
+				}
+
+				
+				var params = options.urlString;
+				
+				var value = document.getElementById("texture").value;
+				localStorage.setItem('meiro.index.texture', value);
+				if (value) params = params+'&texture='+value;
+				
+				var value = document.getElementById("ao").value;
+				localStorage.setItem('meiro.index.ao', value);
+				if (value) params = params+'&ao='+value;
+				
+				var value = document.getElementById("lowpoly").value;
+				localStorage.setItem('meiro.index.lowpoly', value);
+				if (value) params = params+'&lowpoly';
+				
+				var value = document.getElementById("modeloverlay").value;
+				localStorage.setItem('meiro.index.modeloverlay', value);
+				if (value) params = params+'&modeloverlay='+value;
+				
+				//if (options.playerId)
+					topFrame.src = url+'&'+params;
+				//else
+				//	topFrame.src = url;				
+				topFrame.focus();
+			}
+			
+		function loadSavedOptions()
+		{
+			document.getElementById("texture").value = localStorage.getItem('meiro.index.texture')||"";
+			document.getElementById("ao").value = localStorage.getItem('meiro.index.ao')||"";
+			document.getElementById("lowpoly").value = localStorage.getItem('meiro.index.lowpoly')||"";
+			document.getElementById("modeloverlay").value = localStorage.getItem('meiro.index.modeloverlay')||"";
+		}
+		</script>
+	</head>
+	
+	<body>
+		<!--div id="topMenu" class="index-container">
+			<div class="index-button" onclick="start()">НАЧАЛО</div>
+			<div class="index-button additional" style="font-weight: normal; padding:0 0.2em 0.2em 0.2em; font-size:70%;">&#x2630;</div>
+		</div-->
+		<div id="topList" class="index-list">
+			<select id="texture">
+				<option value="">(Текстури)</option>
+				<option value="no">Без текстури</option>
+				<option value="default">С текстури</option>
+				<option value="grid">С мрежа</option>
+			</select>
+			<select id="ao">
+				<option value="">(Засенчване)</option>
+				<option value="no">Без засенчване</option>
+				<option value="fssao">FSSAO засенчване</option>
+				<option value="ssao">SSAO засенчване</option>
+				<option value="sao">SAO засенчване</option>
+				<option value="nnao">NNAO засенчване</option>
+			</select>
+			<select id="lowpoly">
+				<option value="">(Обекти)</option>
+				<option value="yes">Груби обекти</option>
+				<option value="">Фини обекти</option>
+			</select>
+			<select id="modeloverlay">
+				<option value="">(Наложеност)</option>
+				<option value="yes">Наложени обекти</option>
+				<option value="no">Вложени обекти</option>
+			</select>			
+
+			<script>loadSavedOptions();</script>
+			
+			<hr>
+			<div onclick="start('play.html?')"><span class="caption">ПРАЗЕН ЛАБИРИНТ</span></div>
+			<div onclick="start('model.html?models=m03061,m03101,m03141,m03191,m04141,m04391,m04471,m05231,m05232,m05331,m05332,m05341,m05391,m05411,m07351,m07411,m07451,m07452,m07461,m07471,m07501,m07581,m07591,m07592,m08111,m08221,m08222,m08271,m08401,m09181,m09191,m09192,m09193,m09201,m09202,m09203,m09221,m09222,m09223,m09251,m09261,m09271,m09301,m09321,m09331,m09351,m09421,m09431,m09441,m10071,m10091,m10092,m10191,m10231,m10232,m10261,m10301,m10302,m10311,m10312,m10391,m10411,m11121,m11251,m11271,m11281,m11291,m11311,m11371,m11421,m11422,m11423,m11451,m11511,m11512,m12091,m12092,m12093,m12101,m12141,m12142,m12201,m12202,m12221,m12222,m12281,m12282,m12321,m12361,m12381,m12382,m12401,m12441,m13081,m13082,m13161,m13201,m13271,m13272,m13273,m13321,m13401,m13431,m13441,m13451,m13511,m13521,m14171,m14201,m14231,m14351,m14352,m14371,m14381,m14391,m14421,m14431,m14441,m14491,m14492,m14501,m14502,m15181,m15201,m15202,m15591,m15592,m15593,m16161,m16191,m17071,m17081,m17111,m17141,m17201,m17221,m17231,m17241,m17311,m17461,m18191,m18192,m18211,m18271,m18281,m18282,m18341,m18371,m19111,m19211,m19311,m19312,m19313,m19461,m19571,m20131,m20151,m20191,m20192,m20193')"><span class="caption">ПЪЛЕН ЛАБИРИНТ (Всички модели от всички теми)</span></div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m20131,m20151,m20191,m20192')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 20</span></div>
+			<div onclick="start('model.html?model=m20131')"><span class="model">M20131</span> Гледна точка</div>
+			<div onclick="start('model.html?model=m20151')"><span class="model">M20151</span> Традиционна гледна точка за 2D</div>
+			<div onclick="start('model.html?model=m20191')"><span class="model">M20191</span> Плъзгане на 2D сцена чрез гледна точка</div>
+			<div onclick="start('model.html?model=m20192')"><span class="model">M20192</span> Приближаване и отдалечаване на 2D сцена чрез гледна точка</div>
+			<div onclick="start('model.html?model=m20193')"><span class="model">M20193</span> Въртене на 2D сцена чрез гледна точка</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m19111,m19211,m19311,m19312,m19313,m19461,m19571')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 19</span></div>
+			<div onclick="start('model.html?model=m19111')"><span class="model">M19111</span> Видове геометрии</div>
+			<div onclick="start('model.html?model=m19211')"><span class="model">M19211</span> Транслация с матрица</div>
+			<div onclick="start('model.html?model=m19311')"><span class="model">M19311</span> Мащабиране с матрица спрямо точка</div>
+			<div onclick="start('model.html?model=m19312')"><span class="model">M19312</span> Мащабиране с хомогенни координати</div>
+			<div onclick="start('model.html?model=m19313')"><span class="model">M19313</span> Мащабиране с матрица с различни коефициенти по осите</div>
+			<div onclick="start('model.html?model=m19461')"><span class="model">M19461</span> Ротация около права успоредна на Z с матрица</div>
+			<div onclick="start('model.html?model=m19571')"><span class="model">M19571</span> Ротация около права с матрица</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m18191,m18192,m18211,m18271,m18281,m18282,m18341,m18371')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 18</span></div>
+			<div onclick="start('model.html?model=m18191')"><span class="model">M18191</span> Сечение на права с равнина</div>
+			<div onclick="start('model.html?model=m18192')"><span class="model">M18192</span> Сечение на права с триъгълник</div>
+			<div onclick="start('model.html?model=m18211')"><span class="model">M18211</span> Сечение на права със сфера</div>
+			<div onclick="start('model.html?model=m18271')"><span class="model">M18271</span> Двоично търсене за форма на сърце</div>
+			<div onclick="start('model.html?model=m18281')"><span class="model">M18281</span> Двоично търсене за форма на заоблен куб</div>
+			<div onclick="start('model.html?model=m18282')"><span class="model">M18282</span> Двоично търсене за форма на октаедър</div>
+			<div onclick="start('model.html?model=m18341')"><span class="model">M18341</span> Отражение на лъч от сфера</div>
+			<div onclick="start('model.html?model=m18371')"><span class="model">M18371</span> Огледалната стая</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m17071,m17081,m17111,m17141,m17201,m17221,m17231,m17241,m17311,m17461')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 17</span></div>
+			<div onclick="start('model.html?model=m17071')"><span class="model">M17071</span> Вертикално изрязване с равнина</div>
+			<div onclick="start('model.html?model=m17081')"><span class="model">M17081</span> Конични сечения с изрязващи равнини</div>
+			<div onclick="start('model.html?model=m17111')"><span class="model">M17111</span> Изрязваща равнина по три точки</div>
+			<div onclick="start('model.html?model=m17141')"><span class="model">M17141</span> Изрязваща равнина по точка и вектор</div>
+			<div onclick="start('model.html?model=m17201')"><span class="model">M17201</span> Изрязване на предни и задни стени</div>
+			<div onclick="start('model.html?model=m17221')"><span class="model">M17221</span> Проблемна прозрачност на обект</div>
+			<div onclick="start('model.html?model=m17231')"><span class="model">M17231</span> Успешна прозрачност на обект</div>
+			<div onclick="start('model.html?model=m17241')"><span class="model">M17241</span> Вложени земни кълба</div>
+			<div onclick="start('model.html?model=m17311')"><span class="model">M17311</span> Алгоритъм на художника</div>
+			<div onclick="start('model.html?model=m17461')"><span class="model">M17461</span> Z-буфер</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m16161,m16191')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 16</span></div>
+			<div onclick="start('model.html?model=m16161')"><span class="model">M16161</span> Битови маски при отсичане на Коен-Съдърленд</div>
+			<div onclick="start('model.html?model=m16191')"><span class="model">M16191</span> Алгоритъм за отсичане на Коен-Съдърленд</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m15181,m15201,m15202,m15591,m15592,m15593')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 15</span></div>
+			<div onclick="start('model.html?model=m15181')"><span class="model">M15181</span> Платонови тела</div>
+			<div onclick="start('model.html?model=m15201')"><span class="model">M15201</span> Формула на Ойлер за октаедър</div>
+			<div onclick="start('model.html?model=m15202')"><span class="model">M15202</span> Формула на Ойлер за додекаедър</div>
+			<div onclick="start('model.html?model=m15591')"><span class="model">M15591</span> Изпъкнала обвивка &ndash; алгоритъм "Добавяне на точки"</div>
+			<div onclick="start('model.html?model=m15592')"><span class="model">M15592</span> Изпъкнала обвивка &ndash; алгоритъм "Опаковане на подарък"</div>
+			<div onclick="start('model.html?model=m15593')"><span class="model">M15593</span> Изпъкнала обвивка &ndash; алгоритъм "Сканиране на Греъм"</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m14171,m14201,m14231,m14351,m14352,m14371,m14381,m14391,m14421,m14431,m14441,m14491,m14492,m14501,m14502')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 14</span></div>
+			<div onclick="start('model.html?model=m14171')"><span class="model">M14171</span> Ойлерови ъгли</div>
+			<div onclick="start('model.html?model=m14201')"><span class="model">M14201</span> Ориентация на телескоп</div>
+			<div onclick="start('model.html?model=m14231')"><span class="model">M14231</span> Ъгли във виртуален механизъм</div>
+			<div onclick="start('model.html?model=m14351')"><span class="model">M14351</span> Костенуркова графика &ndash; къща</div>
+			<div onclick="start('model.html?model=m14352')"><span class="model">M14352</span> Костенуркова графика &ndash; петокъщие</div>
+			<div onclick="start('model.html?model=m14371')"><span class="model">M14371</span> Аеронавигация &ndash; завой (yaw)</div>
+			<div onclick="start('model.html?model=m14381')"><span class="model">M14381</span> Аеронавигация &ndash; танграж (pitch)</div>
+			<div onclick="start('model.html?model=m14391')"><span class="model">M14391</span> Аеронавигация &ndash; крен (roll)</div>
+			<div onclick="start('model.html?model=m14421')"><span class="model">M14421</span> Полет на осморки без наклон</div>
+			<div onclick="start('model.html?model=m14431')"><span class="model">M14431</span> Полет на осморки с грешни параметри</div>
+			<div onclick="start('model.html?model=m14441')"><span class="model">M14441</span> Полет на осморки с грешен наклон</div>
+			<div onclick="start('model.html?model=m14491')"><span class="model">M14491</span> Пръстени от пешки обърнати навън</div>
+			<div onclick="start('model.html?model=m14492')"><span class="model">M14492</span> Пръстени от пешки обърнати навътре</div>
+			<div onclick="start('model.html?model=m14501')"><span class="model">M14501</span> Метод на стоножката</div>
+			<div onclick="start('model.html?model=m14502')"><span class="model">M14502</span> Ограда с дръвчета</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m13081,m13082,m13161,m13201,m13271,m13272,m13273,m13321,m13401,m13431,m13441,m13451,m13511,m13521')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 13</span></div>
+			<div onclick="start('model.html?model=m13081')"><span class="model">M13081</span> Движение без плавност</div>
+			<div onclick="start('model.html?model=m13082')"><span class="model">M13082</span> Движение с линейна плавност</div>
+			<div onclick="start('model.html?model=m13161')"><span class="model">M13161</span> Движение с тригонометрична плавност</div>
+			<div onclick="start('model.html?model=m13201')"><span class="model">M13201</span> Вибрация със затихване</div>
+			<div onclick="start('model.html?model=m13271')"><span class="model">M13271</span> Отблъскване от стени</div>
+			<div onclick="start('model.html?model=m13272')"><span class="model">M13272</span> Симулиране на топане</div>
+			<div onclick="start('model.html?model=m13273')"><span class="model">M13273</span> Топане с отблъскване</div>
+			<div onclick="start('model.html?model=m13321')"><span class="model">M13321</span> Фонтан от тухли</div>
+			<div onclick="start('model.html?model=m13401')"><span class="model">M13401</span> Прескачане на преграда</div>
+			<div onclick="start('model.html?model=m13431')"><span class="model">M13431</span> Псевдовълни &ndash; синхронно движение</div>
+			<div onclick="start('model.html?model=m13441')"><span class="model">M13441</span> Псевдовълни &ndash; случайно движение</div>
+			<div onclick="start('model.html?model=m13451')"><span class="model">M13451</span> Псевдовълни &ndash; плавно движение</div>
+			<div onclick="start('model.html?model=m13501')"><span class="model">M13501</span> Поклащане на трева в едно направление</div>
+			<div onclick="start('model.html?model=m13511')"><span class="model">M13511</span> Поклащане на трева в две направления</div>
+			<div onclick="start('model.html?model=m13521')"><span class="model">M13521</span> Поклащане на трева и сила на вятъра</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m12091,m12092,m12093,m12101,m12141,m12142,m12201,m12202,m12221,m12222,m12281,m12282,m12321,m12361,m12381,m12382,m12401,m12441')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 12</span></div>
+			<div onclick="start('model.html?model=m12091')"><span class="model">M12091</span> Кръгово движение &ndash; противоположни посоки</div>
+			<div onclick="start('model.html?model=m12092')"><span class="model">M12092</span> Кръгово движение &ndash; еднакви ъглови скорости</div>
+			<div onclick="start('model.html?model=m12093')"><span class="model">M12093</span> Кръгово движение &ndash; еднакви линейни скорости</div>
+			<div onclick="start('model.html?model=m12101')"><span class="model">M12101</span> Илюзия с въртящи се сфери</div>
+			<div onclick="start('model.html?model=m12141')"><span class="model">M12141</span> Вложено въртене</div>
+			<div onclick="start('model.html?model=m12142')"><span class="model">M12142</span> Слънце, земя и рояк луни</div>
+			<div onclick="start('model.html?model=m12201')"><span class="model">M12201</span> Петорно махало</div>
+			<div onclick="start('model.html?model=m12202')"><span class="model">M12202</span> Младеж, девойка и муха</div>
+			<div onclick="start('model.html?model=m12221')"><span class="model">M12221</span> Движение в кръгов лабиринт</div>
+			<div onclick="start('model.html?model=m12222')"><span class="model">M12222</span> Движение по сферичен лабиринт</div>
+			<div onclick="start('model.html?model=m12281')"><span class="model">M12281</span> Отсечки в произволна равнина</div>
+			<div onclick="start('model.html?model=m12282')"><span class="model">M12282</span> Окръжност в произволна равнина</div>
+			<div onclick="start('model.html?model=m12321')"><span class="model">M12321</span> Движение по параметрична повърхнина</div>
+			<div onclick="start('model.html?model=m12361')"><span class="model">M12361</span> Движение по цилиндър</div>
+			<div onclick="start('model.html?model=m12381')"><span class="model">M12381</span> Движение по конус</div>
+			<div onclick="start('model.html?model=m12382')"><span class="model">M12382</span> Движение по пресечен конус</div>
+			<div onclick="start('model.html?model=m12401')"><span class="model">M12401</span> Движение по сфера</div>
+			<div onclick="start('model.html?model=m12441')"><span class="model">M12441</span> Блуждаене по сфера</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m11121,m11251,m11271,m11281,m11291,m11311,m11371,m11421,m11422,m11423,m11451,m11511,m11512')"
+			><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 11</span></div>
+			<div onclick="start('model.html?model=m11121')"><span class="model">M11121</span> FPS - кадри в секунда</div>
+			<div onclick="start('model.html?model=m11251')"><span class="model">M11251</span> Движение с вектор</div>
+			<div onclick="start('model.html?model=m11271')"><span class="model">M11271</span> Плъзгане и падане I</div>
+			<div onclick="start('model.html?model=m11281')"><span class="model">M11281</span> Плъзгане и падане II</div>
+			<div onclick="start('model.html?model=m11291')"><span class="model">M11291</span> Плъзгане и падане III</div>
+			<div onclick="start('model.html?model=m11311')"><span class="model">M11311</span> Движения с неточна синхронизация</div>
+			<div onclick="start('model.html?model=m11371')"><span class="model">M11371</span> Движения с точна синхронизация</div>
+			<div onclick="start('model.html?model=m11421')"><span class="model">M11421</span> Движение между две точки с вектор</div>
+			<div onclick="start('model.html?model=m11422')"><span class="model">M11422</span> Движение по пръстен от отсечки</div>
+			<div onclick="start('model.html?model=m11423')"><span class="model">M11423</span> Движение по ръбовете на куб</div>
+			<div onclick="start('model.html?model=m11451')"><span class="model">M11451</span> Търкаляне на куб</div>
+			<div onclick="start('model.html?model=m11511')"><span class="model">M11511</span> Движение между две точки с линейна комбинация</div>
+			<div onclick="start('model.html?model=m11512')"><span class="model">M11512</span> Бадминтон</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m10071,m10091,m10092,m10191,m10231,m10232,m10261,m10301,m10302,m10311,m10312,m10391,m10411')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 10</span></div>
+			<div onclick="start('model.html?model=m10071')"><span class="model">M10071</span> Хапче с антибиотик</div>
+			<div onclick="start('model.html?model=m10091')"><span class="model">M10091</span> Бетонен тетрапод</div>
+			<div onclick="start('model.html?model=m10092')"><span class="model">M10092</span> Вълнолом от тетраподи</div>
+			<div onclick="start('model.html?model=m10191')"><span class="model">M10191</span> Ротационни тела</div>
+			<div onclick="start('model.html?model=m10231')"><span class="model">M10231</span> Плъзгане на мащаб I</div>
+			<div onclick="start('model.html?model=m10232')"><span class="model">M10232</span> Плъзгане на мащаб II</div>
+			<div onclick="start('model.html?model=m10261')"><span class="model">M10261</span> Крива на Лисажу</div>
+			<div onclick="start('model.html?model=m10301')"><span class="model">M10301</span> Конструктивна геометрия - събиране</div>
+			<div onclick="start('model.html?model=m10302')"><span class="model">M10302</span> Конструктивна геометрия - умножение</div>
+			<div onclick="start('model.html?model=m10311')"><span class="model">M10311</span> Конструктивна геометрия - изваждане</div>
+			<div onclick="start('model.html?model=m10312')"><span class="model">M10312</span> Конструктивна геометрия - разлика</div>
+			<div onclick="start('model.html?model=m10391')"><span class="model">M10391</span> Направа на люспа от Pringles</div>
+			<div onclick="start('model.html?model=m10411')"><span class="model">M10411</span> Люспа от Pringles</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m09181,m09191,m09192,m09193,m09201,m09202,m09203,m09221,m09222,m09223,m09251,m09261,m09271,m09301,m09321,m09331,m09351,m09421,m09431,m09441')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 9</span></div>
+			<div onclick="start('model.html?model=m09181')"><span class="model">M09181</span> Точки в OpenGL</div>
+			<div onclick="start('model.html?model=m09191')"><span class="model">M09191</span> Отсечки в OpenGL</div>
+			<div onclick="start('model.html?model=m09192')"><span class="model">M09192</span> Линии в OpenGL</div>
+			<div onclick="start('model.html?model=m09193')"><span class="model">M09193</span> Примки в OpenGL</div>
+			<div onclick="start('model.html?model=m09201')"><span class="model">M09201</span> Триъгълници в OpenGL</div>
+			<div onclick="start('model.html?model=m09202')"><span class="model">M09202</span> Ветрила в OpenGL</div>
+			<div onclick="start('model.html?model=m09203')"><span class="model">M09203</span> Ленти в OpenGL</div>
+			<div onclick="start('model.html?model=m09221')"><span class="model">M09221</span> Икосаедър в ThreeJS</div>
+			<div onclick="start('model.html?model=m09222')"><span class="model">M09222</span> Торичен възел в ThreeJS</div>
+			<div onclick="start('model.html?model=m09223')"><span class="model">M09223</span> Тримерен текст в ThreeJS</div>
+			<div onclick="start('model.html?model=m09251')"><span class="model">M09251</span> Позиция на обект</div>
+			<div onclick="start('model.html?model=m09261')"><span class="model">M09261</span> Размер на обект</div>
+			<div onclick="start('model.html?model=m09271')"><span class="model">M09271</span> Ориентация на обект</div>
+			<div onclick="start('model.html?model=m09301')"><span class="model">M09301</span> Куб с издутини</div>
+			<div onclick="start('model.html?model=m09321')"><span class="model">M09321</span> Японска възглавница</div>
+			<div onclick="start('model.html?model=m09331')"><span class="model">M09331</span> Форма за кекс</div>
+			<div onclick="start('model.html?model=m09351')"><span class="model">M09351</span> Параметрична пеперуда</div>
+			<div onclick="start('model.html?model=m09421')"><span class="model">M09421</span> Тор от пресечени конуси</div>
+			<div onclick="start('model.html?model=m09431')"><span class="model">M09431</span> Желан квадратен тор</div>
+			<div onclick="start('model.html?model=m09441')"><span class="model">M09441</span> Създаване на квадратен тор</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m08111,m08221,m08222,m08271,m08401')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 8</span></div>
+			<div onclick="start('model.html?model=m08111')"><span class="model">M08111</span> Евклидово, манхатънско и максимално разстояние</div>
+			<div onclick="start('model.html?model=m08221')"><span class="model">M08221</span> Растеризация с целочислено деление</div>
+			<div onclick="start('model.html?model=m08222')"><span class="model">M08222</span> Растеризация с реално деление</div>
+			<div onclick="start('model.html?model=m08271')"><span class="model">M08271</span> Растеризация с единичен вектор</div>
+			<div onclick="start('model.html?model=m08401')"><span class="model">M08401</span> Алгоритъм на Брезенхам</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m07351,m07411,m07451,m07452,m07461,m07471,m07501,m07581,m07591,m07592')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 7</span></div>
+			<div onclick="start('model.html?model=m07351')"><span class="model">M07351</span> Цветово пространство RGB</div>
+			<div onclick="start('model.html?model=m07411')"><span class="model">M07411</span> Цветово пространство CMY(K)</div>
+			<div onclick="start('model.html?model=m07451')"><span class="model">M07451</span> Цветово пространство YIQ</div>
+			<div onclick="start('model.html?model=m07452')"><span class="model">M07452</span> Цветово пространство YUV</div>
+			<div onclick="start('model.html?model=m07461')"><span class="model">M07461</span> Цветово пространство HSV</div>
+			<div onclick="start('model.html?model=m07471')"><span class="model">M07471</span> Цветово пространство HSL</div>
+			<div onclick="start('model.html?model=m07501')"><span class="model">M07501</span> Преобразуване от RGB към черно-бяло</div>
+			<div onclick="start('model.html?model=m07581')"><span class="model">M07581</span> Равномерно разпределени цветове</div>
+			<div onclick="start('model.html?model=m07591')"><span class="model">M07591</span> Разклонени цветове</div>
+			<div onclick="start('model.html?model=m07592')"><span class="model">M07592</span> Съседни цветове</div>
+			
+			
+			<hr>
+			<div onclick="start('model.html?models=m05231,m05232,m05331,m05332,m05341,m05391,m05411')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 5</span></div>
+			<div onclick="start('model.html?model=m05231')"><span class="model">M05231</span> Най-близка точка от права</div>
+			<div onclick="start('model.html?model=m05232')"><span class="model">M05232</span> Най-близка точка от отсечка</div>
+			<div onclick="start('model.html?model=m05331')"><span class="model">M05331</span> Отляво и отдясно на вектор</div>
+			<div onclick="start('model.html?model=m05332')"><span class="model">M05332</span> Вътрешна точка на изпъкнал многоъгълник</div>
+			<div onclick="start('model.html?model=m05341')"><span class="model">M05341</span> Вътрешна точка чрез брой сечения</div>
+			<div onclick="start('model.html?model=m05391')"><span class="model">M05391</span> Ориентирани лица</div>
+			<div onclick="start('model.html?model=m05411')"><span class="model">M05411</span> Теорема на Пик</div>
+
+			
+			<hr>
+			<div onclick="start('model.html?models=m04141,m04391,m04471')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 4</span></div>
+			<div onclick="start('model.html?model=m04141')"><span class="model">M04141</span> Модел на пешка</div>
+			<div onclick="start('model.html?model=m04391')"><span class="model">M04391</span> Скаларно произведение на вектори</div>
+			<div onclick="start('model.html?model=m04471')"><span class="model">M04471</span> Векторно произведение на вектори</div>
+
+			
+			<hr>
+			<div onclick="start('model.html?models=m03061,m03101,m03141,m03191')"><span class="caption">ВСИЧКИ МОДЕЛИ ОТ ТЕМА 3</span></div>
+			<div onclick="start('model.html?model=m03061')"><span class="model">M03061</span> Декартова координатна система</div>
+			<div onclick="start('model.html?model=m03101')"><span class="model">M03101</span> Лява и дясна координатна система</div>
+			<div onclick="start('model.html?model=m03141')"><span class="model">M03141</span> Полярна координатна система</div>
+			<div onclick="start('model.html?model=m03191')"><span class="model">M03191</span> Сферична координатна система</div>
+			
+			
+			</div>
+
+
+		<iframe id="topFrame" style="display:none;" allowfullscreen src=""></iframe>
+		
+		<script>
+			document.body.style.backgroundColor = MEIRO.BACKGROUND_COLOR_NAME;
+			topMenu = document.getElementById('topMenu');
+			topFrame = document.getElementById('topFrame');
+//			if (location.protocol == 'file:') start();
+		</script>
+	</body>
 </html>

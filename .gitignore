@@ -4,3 +4,6 @@
 /src/config.php
 /db/
 php_errors.log
+/public/*
+!/public/.htaccess
+!/public/index.php
