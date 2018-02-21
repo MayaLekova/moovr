@@ -13,6 +13,7 @@ class MeiroToolProvider extends ToolProvider\ToolProvider {
 	function onLaunch() {
 		var_dump('onLaunch');
 		error_log('Settings:'.json_encode($this->resourceLink->getSettings()));
+		$_SESSION['launchSettings'] = $this->resourceLink->getSettings();
 		error_log('User:'.json_encode($this->user));
 		error_log('Context:'.json_encode($this->context));
 		/*
@@ -22,7 +23,7 @@ class MeiroToolProvider extends ToolProvider\ToolProvider {
 		*/
 
 		// TODO: obtain from server
-		$this->redirectUrl = 'http://192.168.0.105:8080/meiro';
+		$this->redirectUrl = 'http://192.168.0.103:8080/meiro';
 	}
 
 	function onError() {
