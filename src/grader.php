@@ -5,7 +5,7 @@ use IMSGlobal\LTI\ToolProvider\ResourceLink;
 
 require __DIR__ . '/config.php';
 
-$grade = function ($model, $answer, $student, $db_connector) {
+$grade = function ($model, $answer, $student, $db_connector, $return_url) {
 	include __DIR__ . '/questions/' . $model . '.php';
 	
 	$result = $processAnswer->call($this, $answer);
@@ -25,9 +25,11 @@ $grade = function ($model, $answer, $student, $db_connector) {
 		error_log('Warning: possible grading error for user '.$user_id);
 	}
 
-	// TODO: obtain from tool_provider from /lti
-	$returnUrl = 'http://moodle.mnknowledge.com/mod/lti/return.php?course=29&launch_container=4&instanceid=5';
-	// TODO: send outcome to client
+	$return_url = $return_url.'&lti_msg='.urlencode($result['outcome']);
+	error_log('Returning student to '.$return_url);
+	// TODO: send outcome to client and/or redirect her
+	header('Location: ' . $return_url, true, 303);
+	exit();
 }
 
 ?>

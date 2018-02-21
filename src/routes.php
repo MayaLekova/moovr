@@ -39,7 +39,7 @@ $app->post('/submit_answer', function(Request $request, Response $response, arra
 
     // TODO: obtain student from session
     $student = null;
-
     $db_connector = $request->getAttribute('db_connector');
-    $grade->call($this, $params['model'], $parsedBody['answer1'], $student, $db_connector);
+
+    $grade->call($this, $params['model'], $parsedBody['answer1'], $student, $db_connector, $_SESSION['returnUrl']);
 })->add($lti_db_open);
